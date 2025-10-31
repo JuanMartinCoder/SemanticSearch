@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
-from lib.keyword_search import (
+
+from lib.search.keyword_search import (
     bm25_idf_command,
     bm25_tf_command,
     bm25search_command,

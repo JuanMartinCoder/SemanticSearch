@@ -3,8 +3,9 @@
 import argparse
 
 
-from lib.search_utils import DEFAULT_CHUNK_SIZE, DEFAULT_OVERLAP, DEFAULT_SEARCH_LIMIT
-from lib.semantic_search import chunk_text, embed_query_text, embed_text, verify_embeddings, verify_model,semantic_search
+from lib.chunks.chunk_semantic import embed_chunks, search_chunked_command
+from lib.search_utils import DEFAULT_CHUNK_SIZE, DEFAULT_OVERLAP, DEFAULT_SEARCH_LIMIT, DEFAULT_SEMANTIC_CHUNK_SIZE
+from lib.search.semantic_search import chunk_semantic_text, chunk_text, embed_query_text, embed_text, verify_embeddings, verify_model,semantic_search
 
 def main():
     parser = argparse.ArgumentParser(description="Semantic Search CLI")
@@ -40,6 +41,23 @@ def main():
     chunk_parser.add_argument("--chunk-size", type=int, nargs='?', default=DEFAULT_CHUNK_SIZE, help="Limit chunk size")
     chunk_parser.add_argument("--overlap", type=int, nargs='?', default=DEFAULT_OVERLAP, help="overlap")
 
+    semantic_chunk_parser = subparsers.add_parser(
+        "semantic_chunk", help="Chunk text"
+    )
+    semantic_chunk_parser.add_argument("query", type=str, help="Query")
+    semantic_chunk_parser.add_argument("--max-chunk-size", type=int, nargs='?', default=DEFAULT_SEMANTIC_CHUNK_SIZE, help="Limit chunk size")
+    semantic_chunk_parser   .add_argument("--overlap", type=int, nargs='?', default=0, help="overlap")
+
+    subparsers.add_parser(
+        "embed_chunks", help="Embed chunked text"
+    )
+
+    search_chunk_parser = subparsers.add_parser(
+        "search_chunked", help="Search for movies using chunked embeddings"
+    )
+    search_chunk_parser.add_argument("query", type=str, help="Query")
+    search_chunk_parser.add_argument("--limit", type=int, nargs='?', default=DEFAULT_SEARCH_LIMIT, help="Limit search results")
+
     args = parser.parse_args()
 
 
@@ -65,10 +83,21 @@ def main():
             print("Searching for:", args.query)
             results = semantic_search(args.query, args.limit)
             for i, res in enumerate(results, 1):
-                print(f"{i}. {res['title']} (score: {res['score']:.4f})\n{res['description'][:100]}...\n")
+                print(f"{i}. {res['title']} (score: {res['score']:.4f})\n{res['description'][:100]}...\nd")
         case "chunk":
             print(f"Chunking {len(args.query)} characters")
             chunk_text(args.query, args.chunk_size, args.overlap)
+        case "semantic_chunk":
+            print(f"Semantically chunking {len(args.query)} characters")
+            chunk_semantic_text(args.query, args.max_chunk_size, args.overlap)
+        case "embed_chunks":
+            embed_chunks()
+        case "search_chunked":
+            print("Searching for:", args.query)
+            results = search_chunked_command(args.query, args.limit)
+            for i, res in enumerate(results["results"], 1):
+                print(f"\n{i}. {res["title"]} (score: {res['score']:.4f})")
+                print(f"   {res["document"]}...")
         case _:
             parser.print_help()
 

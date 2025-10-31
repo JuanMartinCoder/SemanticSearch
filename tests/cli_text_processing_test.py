@@ -1,7 +1,7 @@
 import unittest
 
 
-from cli.lib.text_processing import (
+from text_processing import (
     preprocess_text,
     tokenize,
 )

@@ -4,15 +4,27 @@ from typing import Any
 
 DEFAULT_SEARCH_LIMIT = 5
 DEFAULT_CHUNK_SIZE = 200
+DEFAULT_CHUNK_OVERLAP = 1
 DEFAULT_OVERLAP = 2
+DEFAULT_DOCUMENT_PREVIEW_SIZE = 100
+DEFAULT_SEMANTIC_CHUNK_SIZE = 4
+
+SEARCH_MULTIPLIER = 5
+RRF_K = 60
+
 BM25_K1 = 1.5
 BM25_B = 0.75
 SCORE_PRECISION = 3
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 DATA_PATH = os.path.join(PROJECT_ROOT, "data", "movies.json")
+GOLDEN_DATASET_PATH = os.path.join(PROJECT_ROOT, "data", "golden_dataset.json")
 STOP_WORDS_PATH = os.path.join(PROJECT_ROOT, "data", "stop_words.txt")
 CACHE_PATH = os.path.join(PROJECT_ROOT, "cache")
+
+MOVIE_EMBEDDINGS_PATH = os.path.join(CACHE_PATH, "movie_embeddings.npy")
+CHUNK_EMBEDDINGS_PATH = os.path.join(CACHE_PATH, "chunk_embeddings.npy")
+CHUNK_METADATA_PATH = os.path.join(CACHE_PATH, "chunk_metadata.json")
 
 def load_movies() -> list[dict]:
     with open(DATA_PATH, "r") as f:

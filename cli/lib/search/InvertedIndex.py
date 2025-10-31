@@ -5,7 +5,7 @@ import pickle
 import math
 from collections import Counter, defaultdict
 
-from .search_utils import (
+from ..search_utils import (
     BM25_B,
     BM25_K1,
     DEFAULT_SEARCH_LIMIT,
@@ -14,7 +14,7 @@ from .search_utils import (
     CACHE_PATH
 )
 
-from .text_processing import (
+from ..text_processing import (
     tokenize
 )
 

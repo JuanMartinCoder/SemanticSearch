@@ -1,15 +1,9 @@
 
+
+
+from ..search_utils import BM25_B, BM25_K1, DEFAULT_SEARCH_LIMIT
 from .InvertedIndex import InvertedIndex
-
-from .search_utils import (
-    BM25_B,
-    BM25_K1,
-    DEFAULT_SEARCH_LIMIT,
-)
-
-from .text_processing import (
-    tokenize,
-)
+from ..text_processing import tokenize
 
 
 def search_command(query: str, limit: int = DEFAULT_SEARCH_LIMIT) -> list[dict]:

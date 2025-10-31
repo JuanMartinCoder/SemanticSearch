@@ -1,6 +1,7 @@
 {
     "python.analysis.extraPaths": [
-        "./cli"
+        "./cli",
+        "./cli/lib"
     ],
     "python.testing.unittestArgs": [
         "-v",
